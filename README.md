@@ -1,5 +1,8 @@
 # Data Science Midterm Project
 
+Data Scientist Flex February 2024 Cohort <br>
+Group Members: Bimpe Adeleke, Ken Wall, Kenneth Tang
+
 ## Project/Goals
 
 ## Process
