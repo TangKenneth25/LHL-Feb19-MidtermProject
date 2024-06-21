@@ -61,4 +61,3 @@ def parse_json_data(jsonResults, keepKeys):
     df.drop(columns=dropKeys,inplace=True)
 
     return df
-    
