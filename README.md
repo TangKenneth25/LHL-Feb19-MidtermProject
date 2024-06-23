@@ -186,8 +186,12 @@ housingData.drop(columns=['tags'],inplace=True)
 
 ![Scatter Plot: Sold vs. List Price](/images/housingDataScatterSoldList.png "Scatter Plot: Sold vs. List Price")
 
+<p>The outliers were removed and a more linear relationship below is observed</p>
+
+![Scatter Plot: Sold vs. List Price](/images/housingDataScatterSoldList2.png "Scatter Plot: Sold vs. List Price")
+
 </br>
-<p>We then did scatter plots for the highest correlated variables to see any trends. The outputs of scatter plots can be seen below. It is difficult to see detail due to the scale of the plot as the result of the outlier which force the data to scale down. It appears that anywhere between 2 - 6 bedrooms and baths will have a higher sales price. Square footage, which you would expect to have a strong linear relationship shows more of a cone shape expanding from the origin rather than a clear linear relationship.
+<p>We then did scatter plots for the highest correlated variables to see any trends. The outputs of scatter plots can be seen below. It is difficult to see detail due to the scale of the plot as the result of the outlier which force the data to scale down. It appears that anywhere between 2 - 6 bedrooms and baths will have a higher sales price. Square footage, which you would expect to have a strong linear relationship shows slight gradual incline but is difficult to tell because of the scale.
 
 
 ![Scatter Plot: Sold vs. Bathrooms](/images/housingDataScatterSoldBaths.png "Scatter Plot: Sold vs. Bathrooms")
@@ -198,27 +202,95 @@ housingData.drop(columns=['tags'],inplace=True)
 ![Scatter Plot: Sold vs. Year built](/images/housingDataScatterSoldYearBuilt.png "Scatter Plot: Sold vs. Year build")
 
 </br>
-<p>Next we wanted to determine the correlation between numerical variables(less target variable) to detect highly correlated features that we may want to drop. Baths and baths_full have a correlation of 0.86 and both may not be useful to the model given such a high correlation.</p>
+<p>Next we wanted to determine the correlation between numerical variables(less target variable) to detect highly correlated features that we may want to drop. Baths and baths_full have a correlation of 0.86 and both may not be useful to the model given such a high correlation. It was decided to drop baths_full</p>
 
 ![Heatmap NonTarget](/images/housingDataNonTargetHeatMap.png "Heatmap NonTarget")
 
 
-
-
-
-
-
-
-
-
 ### 2. Model Selection - evaluate multiple models and compare their performance
+<p>After preprocessing, scaling, splitting into train and test we were ready to fit the various models outlined below</p>
 
+#### Model 1 - Linear Regression
+```
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+y_pred_LR = model.predict(X_test)
+
+mse_LR = mean_squared_error(y_test, y_pred_LR)
+r2_LR = r2_score(y_test[100:200], y_pred_LR[100:200])
+```
+
+- Mean squared error = 
+- R squared = 
+
+#### Model 2 - Decision Tree
+```
+tree_model = DecisionTreeRegressor(random_state=42)
+tree_model.fit(X_train, y_train)
+
+y_pred_tree = tree_model.predict(X_test)
+
+mse_tree = mean_squared_error(y_test, y_pred_tree)
+r2_tree = r2_score(y_test, y_pred_tree)
+```
+
+- Mean squared error = 
+- R squared = 
+
+#### Model 3 - Random Forest
+```
+forest_model = RandomForestRegressor(random_state=42)
+forest_model.fit(X_train, y_train)
+y_pred_forest = forest_model.predict(X_test)
+
+mse_forest = mean_squared_error(y_test, y_pred_forest)
+r2_forest = r2_score(y_test, y_pred_forest)
+```
+
+- Mean squared error = 
+- R squared = 
+
+#### Model 4 - Gradient Boost
+```
+gb_model = GradientBoostingRegressor(random_state=42)
+gb_model.fit(X_train, y_train)
+
+y_pred_gb = gb_model.predict(X_test)
+
+mse_gb = mean_squared_error(y_test, y_pred_gb)
+r2_gb = r2_score(y_test, y_pred_gb)
+```
+
+- Mean squared error = 
+- R squared = 
+
+#### Model 5 - Support Vector Regression
+```
+svr_model = SVR(kernel='rbf')
+svr_model.fit(X_train, y_train)
+
+y_pred_svr = svr_model.predict(X_test)
+
+mse_svr = mean_squared_error(y_test, y_pred_svr)
+r2_svr = r2_score(y_test[100:200], y_pred_svr[100:200])
+```
+
+- Mean squared error = 
+- R squared = 
+
+#### Model Conclusion
+<p>
+Our overall model performance was very poor accross all models, with R Squared below XXX for all models. However, based on the model testwork performed above the XXX model performed the best having the best R Squared of XXX. Model XXX had the lowest mean squared error.
+</p>
 
 ### 3. Tuning and pipelining - creating a pipeline for easier retraining
 
 
 ## Challenges 
-(discuss challenges you faced in the project)
+1. Data leakage
+2. Dealing with tags took extra time
+3. 
 
 ## Future Goals
 (what would you do if you had more time?)
