@@ -221,8 +221,8 @@ mse_LR = mean_squared_error(y_test, y_pred_LR)
 r2_LR = r2_score(y_test[100:200], y_pred_LR[100:200])
 ```
 
-- Mean squared error = 
-- R squared = 
+- Mean squared error = 4325054394
+- R squared = 0.98094
 
 #### Model 2 - Decision Tree
 ```
@@ -235,8 +235,8 @@ mse_tree = mean_squared_error(y_test, y_pred_tree)
 r2_tree = r2_score(y_test, y_pred_tree)
 ```
 
-- Mean squared error = 
-- R squared = 
+- Mean squared error = 58515925
+- R squared = 0.99948
 
 #### Model 3 - Random Forest
 ```
@@ -248,8 +248,8 @@ mse_forest = mean_squared_error(y_test, y_pred_forest)
 r2_forest = r2_score(y_test, y_pred_forest)
 ```
 
-- Mean squared error = 
-- R squared = 
+- Mean squared error = 76713112
+- R squared = 0.999319
 
 #### Model 4 - Gradient Boost
 ```
@@ -262,8 +262,8 @@ mse_gb = mean_squared_error(y_test, y_pred_gb)
 r2_gb = r2_score(y_test, y_pred_gb)
 ```
 
-- Mean squared error = 
-- R squared = 
+- Mean squared error = 660330741
+- R squared = 0.99414
 
 #### Model 5 - Support Vector Regression
 ```
@@ -276,12 +276,12 @@ mse_svr = mean_squared_error(y_test, y_pred_svr)
 r2_svr = r2_score(y_test[100:200], y_pred_svr[100:200])
 ```
 
-- Mean squared error = 
-- R squared = 
+- Mean squared error = 118806954502
+- R squared = -0.041469
 
 #### Model Conclusion
 <p>
-Our overall model performance was very poor accross all models, with R Squared below XXX for all models. However, based on the model testwork performed above the XXX model performed the best having the best R Squared of XXX. Model XXX had the lowest mean squared error.
+Our overall model performance was very well accross all models, with R Squared above 98% for all models, except SVR. However, based on the model testwork performed above the decision tree model performed the best having the best R Squared of 0.9995. The decision tree model also had the lowest mean squared error of 58515925. Random forest also performed well with an R Squared 0.9993.
 </p>
 
 ### 3. Tuning and pipelining - creating a pipeline for easier retraining
