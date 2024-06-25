@@ -1,4 +1,5 @@
 # Libraries
+import pandas as pd
 from pandas import json_normalize
 
 
@@ -9,6 +10,20 @@ from pandas import json_normalize
 def keep_keys():
     """
     Returns list of keys determined in group meeting to be kept for dataframe
+    ['tags','status','list_date','open_houses','description.year_built',
+    'description.baths_3qtr', 'description.sold_date',
+    'description.sold_price', 'description.baths_full', 'description.name',
+    'description.baths_half', 'description.lot_sqft', 'description.sqft',
+    'description.baths', 'description.sub_type', 'description.baths_1qtr',
+    'description.garage', 'description.stories', 'description.beds',
+    'description.type','list_price','property_id','flags.is_new_construction', 
+    'flags.is_for_rent', 'flags.is_subdivision', 'flags.is_contingent', 
+    'flags.is_price_reduced', 'flags.is_pending', 'flags.is_foreclosure', 
+    'flags.is_plan', 'flags.is_coming_soon', 'flags.is_new_listing',
+    'listing_id','price_reduced_amount','location.address.postal_code',
+    'location.address.state', 'location.address.coordinate.lon',
+    'location.address.coordinate.lat', 'location.address.city',
+    'location.address.state_code', 'location.address.line']
     """
     keys = ['tags','status','list_date','open_houses','description.year_built',
               'description.baths_3qtr', 'description.sold_date',
@@ -61,3 +76,30 @@ def parse_json_data(jsonResults, keepKeys):
     df.drop(columns=dropKeys,inplace=True)
 
     return df
+
+
+# Encodes tags
+def one_hot_encode_tags(tags, specific_tags):
+    """ 
+    Encodes tags from housing data
+    Params:
+        tags (str): tags for one row in housing data
+        specific_tags (list): specific tags to encode
+    Returns:
+        DataFrame of encoded tags
+    """
+    ohe_dict = {tag: False for tag in specific_tags}
+    ohe_dict['other_tags'] = False
+
+    if len(tags) == 0:
+        tags = []
+    else: 
+        tags = eval(tags)
+
+    for tag in tags:
+        if tag in specific_tags:
+            ohe_dict[tag] = True
+        else:
+            ohe_dict['other_tags'] = True
+    return pd.Series(ohe_dict)
+
