@@ -212,85 +212,249 @@ housingData.drop(columns=['tags'],inplace=True)
 
 #### Model 1 - Linear Regression
 ```
-model = LinearRegression()
-model.fit(X_train, y_train)
+LR_model = LinearRegression()
+LR_model.fit(X_train_scaled, y_train)
 
-y_pred_LR = model.predict(X_test)
+y_train_LR = LR_model.predict(X_train_scaled)
+y_test_LR = LR_model.predict(X_test_scaled)
 
-mse_LR = mean_squared_error(y_test, y_pred_LR)
-r2_LR = r2_score(y_test[100:200], y_pred_LR[100:200])
+train_mse_LR = mean_squared_error(y_train, y_train_LR)
+train_r2_LR = r2_score(y_train, y_train_LR)
+
+mse_LR = mean_squared_error(y_test, y_test_LR)
+r2_LR = r2_score(y_test, y_test_LR)
+
+LR_metrics = {'MSE':mse_LR, 'R2':r2_LR}
 ```
 
-- Mean squared error = 4325054394
-- R squared = 0.98094
+- Train MSE: 	 3479895584.8480883
+- Test MSE: 	 4328005232.184329
+- Train R2: 	 0.965973443727785
+- Test R2: 	    0.961626506100333
+
+<p>The linear regression model performed really well with over 0.96 R squared for both train and test data. If the test R-squared is significantly lower than the train R-squared, it can be an indication of overfitting. If the Mean Squared Error (MSE) is higher on the test set compared to the training set, it typically indicates that the model is overfitting the training data. However, R squared is the proportion of the variance in the dependent variable that is predictable from the independent variables and was determined to be a better measure of our model success. The difference between the train and test set R squared is so minimal that we can say the model does a good job of predicting the results of the sale price based on the features selected in our EDA process. When we complete our model tuning in the next steps we can help reduce the MSE using regularization and cross-validation.</p>
 
 #### Model 2 - Decision Tree
 ```
 tree_model = DecisionTreeRegressor(random_state=42)
-tree_model.fit(X_train, y_train)
+tree_model.fit(X_train_scaled, y_train)
 
-y_pred_tree = tree_model.predict(X_test)
+y_train_tree = tree_model.predict(X_train_scaled)
+y_test_tree = tree_model.predict(X_test_scaled)
 
-mse_tree = mean_squared_error(y_test, y_pred_tree)
-r2_tree = r2_score(y_test, y_pred_tree)
+train_mse_tree = mean_squared_error(y_train, y_train_tree)
+train_r2_tree = r2_score(y_train, y_train_tree)
+
+mse_tree = mean_squared_error(y_test, y_test_tree)
+r2_tree = r2_score(y_test, y_test_tree)
+
+DTree_metrics = {'MSE':mse_tree, 'R2':r2_tree}
 ```
 
-- Mean squared error = 58515925
-- R squared = 0.99948
+- Train MSE: 	 0.0
+- Test MSE: 	 77004555.55555555
+- Train R2: 	 1.0
+- Test R2: 	     0.9993172527101206
+
+<p>As with linear regression above R squared is the measure we are more concerned with and is basically 1.0 for both train and test, so this model performs almost perfectly at determining the variance in the dependent variable that is predictable from the independent variables.</p>
 
 #### Model 3 - Random Forest
 ```
 forest_model = RandomForestRegressor(random_state=42)
-forest_model.fit(X_train, y_train)
-y_pred_forest = forest_model.predict(X_test)
+forest_model.fit(X_train_scaled, y_train)
+
+y_train_forest = forest_model.predict(X_train_scaled)
+y_test_forest = forest_model.predict(X_test_scaled)
+
+train_mse_forest = mean_squared_error(y_train, y_train_forest)
+train_r2_forest = r2_score(y_train, y_train_forest)
+
+mse_forest = mean_squared_error(y_test, y_test_forest)
+r2_forest = r2_score(y_test, y_test_forest)
+
+Forest_metrics = {'MSE':mse_forest, 'R2':r2_forest}
+```
+
+- Train MSE: 	 7239159.801686489
+- Test MSE: 	 75306351.56509332
+- Train R2: 	 0.9999292152099539
+- Test R2: 	     0.9993323095358342
+
+<p>The random forest model, like decision tree, performs almost indentically between train and test sets with the R square metric of 0.999. There is quite a big difference in MSE, but that could most likely be fixed with hyper parameter tuning.</p>
+
+#### Model 4 - XG Boost
+```
+xgb_model = XGBRegressor(random_state=42)
+xgb_model.fit(X_train_scaled, y_train)
+
+y_train_xgb = xgb_model.predict(X_train_scaled)
+y_test_xgb = xgb_model.predict(X_test_scaled)
+
+train_mse_xgb = mean_squared_error(y_train, y_train_xgb)
+train_r2_xgb = r2_score(y_train, y_train_xgb)
+
+mse_xgb = mean_squared_error(y_test, y_test_xgb)
+r2_xgb = r2_score(y_test, y_test_xgb)
+
+XGB_metrics = {'MSE':mse_xgb, 'R2':r2_xgb}
+```
+
+- Train MSE: 	 4386703.237700574
+- Test MSE: 	 29075644.353282813
+- Train R2: 	 0.9999571066427346
+- Test R2: 	     0.999742205935214
+
+<p>XG Boost performs similarly to random forest in R squared, with a measure of 0.999. However, its MSE is much less, which could possibly indicate a better model and less overfitting.</p>
+
+#### Model 5 - Support Vector Regression
+```
+svr_model = SVR(kernel='rbf')
+svr_model.fit(X_train_scaled, y_train)
+
+y_train_svr = svr_model.predict(X_train_scaled)
+y_test_svr = svr_model.predict(X_test_scaled)
+
+train_mse_svr = mean_squared_error(y_train, y_train_svr)
+train_r2_svr = r2_score(y_train, y_train_tree)
+
+mse_svr = mean_squared_error(y_test, y_test_svr)
+r2_svr = r2_score(y_test, y_test_svr)
+
+SVR_metrics = {'MSE':mse_svr, 'R2':r2_svr}
+```
+
+- Train MSE: 	 106808398328.74374
+- Test MSE: 	 118773156180.84033
+- Train R2: 	 1.0
+- Test R2: 	     -0.05308120938878913
+
+<p>Model results are not as expected and do not show the model performs well. The other models so far showed strong performance, so this model will be excluded from further analysis.</p>
+
+#### Model Conclusion
+<p>
+Our overall model performance was very well accross all models, with R Squared above 96% for all models, except SVR. However, based on the model testwork performed above the decision tree, random forest and XG boost for comparative purposed had similar R Squared of basically 1.0. The XG Boost model also had the lowest mean squared error of 29,075,644.35 in the test set. Random forest and the decision tree both had MSE of 70M in the test set, which could indicate XG Boost is a slightly better model. We will choose:
+
+- Random Forest 
+- Gradient Boost
+- Decision tree
+- SVR
+</p>
+
+### 3. Tuning and pipelining - creating a pipeline for easier retraining
+<p>First we import our processed train, test split data, which has 50 features with 6,597 rows of data.</p>
+
+<p>As suggested in the requirements we developed our own custom function to create n_splits sets of trainin and validatin folds. The code is outlined below:</p>
+
+```
+    kfold = KFold(n_splits=n_splits)
+    training_folds = []
+    validation_folds = []
+
+    for train_index, val_index in kfold.split(train_df):
+      train_fold = train_df.iloc[train_index].copy()
+      val_fold = train_df.iloc[val_index].copy()
+
+      # Compute city means in the training fold
+      city_means = train_fold.groupby(city_column)[target_column].mean().reset_index()
+      city_means.columns = [city_column, f'{target_column}_city_mean']
+
+      # Merge these means into the validation fold based on the city column
+      val_fold = val_fold.merge(city_means, on=city_column, how='left')
+
+      training_folds.append(train_fold)
+      validation_folds.append(val_fold)
+
+    return training_folds, validation_folds
+```
+
+<p>We originally used GridsearchCV to do the hyper parameter tuning, but we were finding that with the number of parameter we were trying to tune it was taking to long to process, so we switched to RandomsearchCV.</p>
+
+<p>Initially a custom function was built to perform the grid search:</p>
+
+```
+def perform_grid_search_cv(model, param_grid, X, y, cv=5):
+
+    grid_search = GridSearchCV(
+        estimator=model, 
+        param_grid=param_grid, 
+        cv=cv, 
+        scoring='neg_mean_squared_error')
+    
+    # Fit the GridSearchCV on the housingData
+    grid_search.fit(X_train, y_train)
+
+    # Return the best estimator and the best parameters
+    return grid_search.best_estimator_, grid_search.best_params_, grid_search.best_score_
+```
+
+#### Random Forest 
+```
+forest_model = RandomForestRegressor(random_state=42)
+forest_model.fit(X_train_scaled, y_train)
+y_pred_forest = forest_model.predict(X_test_scaled)
 
 mse_forest = mean_squared_error(y_test, y_pred_forest)
 r2_forest = r2_score(y_test, y_pred_forest)
 ```
 
-- Mean squared error = 76713112
-- R squared = 0.999319
-
-#### Model 4 - Gradient Boost
 ```
-gb_model = GradientBoostingRegressor(random_state=42)
-gb_model.fit(X_train, y_train)
+# RandomForestRegressor
+param_grid = {
+    'n_estimators': [50, 100, 200],
+    'max_features': ['auto', 'sqrt', 'log2'],
+    'max_depth': [None, 10, 20, 30],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4],
+    'bootstrap': [True, False]
+}
 
-y_pred_gb = gb_model.predict(X_test)
 
-mse_gb = mean_squared_error(y_test, y_pred_gb)
-r2_gb = r2_score(y_test, y_pred_gb)
-```
+grid_search = GridSearchCV(estimator=forest_model, param_grid=param_grid, cv=5, n_jobs=-1, scoring='neg_mean_squared_error')
 
-- Mean squared error = 660330741
-- R squared = 0.99414
-
-#### Model 5 - Support Vector Regression
-```
-svr_model = SVR(kernel='rbf')
-svr_model.fit(X_train, y_train)
-
-y_pred_svr = svr_model.predict(X_test)
-
-mse_svr = mean_squared_error(y_test, y_pred_svr)
-r2_svr = r2_score(y_test[100:200], y_pred_svr[100:200])
+grid_search.fit(X_train_scaled, y_train)
 ```
 
-- Mean squared error = 118806954502
-- R squared = -0.041469
+#### XG Boost
+```
+param_grid = {
+    'max_depth': [5, 10, 15, 20],
+    'learning_rate': [0.1, 0.01, 0.001],
+    'n_estimators': [100, 200, 300],
+    'gamma': [0, 0.1, 0.3],
+    'subsample': [0.8, 1.0],
+    'colsample_bytree': [0.8, 1.0]
+}
 
-#### Model Conclusion
+grid_search = GridSearchCV(estimator=xgb_model, param_grid=param_grid, 
+                           cv=5, n_jobs=-1, scoring='neg_mean_squared_error', verbose=1)
+```
+
+#### Decision Tree
+```
+
+```
+#### Best Model
 <p>
-Our overall model performance was very well accross all models, with R Squared above 98% for all models, except SVR. However, based on the model testwork performed above the decision tree model performed the best having the best R Squared of 0.9995. The decision tree model also had the lowest mean squared error of 58515925. Random forest also performed well with an R Squared 0.9993.
-</p>
+The best model based on the hyperparameter tuning was _____ with the following parameters:</p>
 
-### 3. Tuning and pipelining - creating a pipeline for easier retraining
+- parm 1 - 
+- parm 2 - 
+- parm 3 - 
+
+
+
 
 
 ## Challenges 
 1. Data leakage
-2. Dealing with tags took extra time
+2. Tags - Most challenging aspect of EDA (Sorting, Ranking JSON data and selecting the top tags and then OHE)
 3. 
 
 ## Future Goals
-(what would you do if you had more time?)
+1. Stretch activities:
+    - EDA - Importing and joining new data to the data set
+    - Model Selection - Feature Selection to improve model performance
+    - Tuning Pipeline - Implementing a prediction pipeline
+2. Model Selection - Trying out additional models on the dataset
+3. Tuning Pipeline - Further research on the best paramenters for each model
+
