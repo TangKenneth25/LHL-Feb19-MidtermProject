@@ -204,7 +204,7 @@ housingData.drop(columns=['tags'],inplace=True)
 </br>
 <p>Next we wanted to determine the correlation between numerical variables(less target variable) to detect highly correlated features that we may want to drop. Baths and baths_full have a correlation of 0.86 and both may not be useful to the model given such a high correlation. It was decided to drop baths_full</p>
 
-![Heatmap NonTarget](/images/housingDataNonTargetHeatMap.png "Heatmap NonTarget")
+![Heatmap NonTarget](/images/housingDataNonTargetHeatmap.png "Heatmap NonTarget")
 
 
 ### 2. Model Selection - evaluate multiple models and compare their performance
@@ -446,15 +446,19 @@ The best model based on the hyperparameter tuning was _____ with the following p
 
 
 ## Challenges 
-1. Data leakage
+1. Data leakage - NA/Null columns were filled with mean from the entire data set which means there was some data leakage when the data was split 
 2. Tags - Most challenging aspect of EDA (Sorting, Ranking JSON data and selecting the top tags and then OHE)
-3. 
+3. Model Tuning - Determining the range and parameters to change in models
+4. Version Control - Multiple people working on the same code led to some overwriting
 
 ## Future Goals
 1. Stretch activities:
-    - EDA - Importing and joining new data to the data set
-    - Model Selection - Feature Selection to improve model performance
-    - Tuning Pipeline - Implementing a prediction pipeline
-2. Model Selection - Trying out additional models on the dataset
-3. Tuning Pipeline - Further research on the best paramenters for each model
-
+    - Importing and joining new data to the data set
+    - Feature Selection to improve model performance
+    - Implementing a prediction pipeline
+2. EDA - Splitting data to get mean values for NA/Null data to prevent data leakage 
+3. Model Selection - Trying out additional models on the dataset
+4. Tuning Pipeline - Further research on the best paramenters for each model
+5. Create models to predict sale price without using list_price data, as list price was very similar to sale price
+6. Include additional data scraped from external sources 
+7. Attempt to predict a more volatile market
