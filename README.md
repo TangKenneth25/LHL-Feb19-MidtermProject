@@ -414,6 +414,10 @@ grid_search = GridSearchCV(estimator=forest_model, param_grid=param_grid, cv=5, 
 grid_search.fit(X_train_scaled, y_train)
 
 ```
+- We noted that the best model for the Random Forest model produced a lower error for both the mean squared error and the R2 score 
+- Random Forest Best model parameter: R2 score of 0.9998 and Mean Squared Error score of 16323156.67 
+- Default parameter: R2 score of 0.9995 and Mean Squared Error score of 48807475.35.
+
 
 #### XG Boost
 ```
@@ -429,6 +433,10 @@ param_grid = {
 grid_search = GridSearchCV(estimator=xgb_model, param_grid=param_grid, 
                            cv=5, n_jobs=-1, scoring='neg_mean_squared_error', verbose=1)
 ```
+
+- We noted that the model with the tuned parameters gotten from the Grid Search performed better in comparison to the model with the XGBooster default parameters 
+- XGBooster Best model parameter: R2 score of 0.9999 and Mean Squared Error score of 11,038,580.09. 
+- Default parameter: R2 score of 0.9997 and Mean Squared Error score of 29,186,569.96.
 
 
 #### Best Model
