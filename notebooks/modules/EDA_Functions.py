@@ -1,5 +1,6 @@
 # Libraries
 import pandas as pd
+from collections import defaultdict
 from pandas import json_normalize
 
 
@@ -83,7 +84,7 @@ def one_hot_encode_tags(tags, specific_tags):
     """ 
     Encodes tags from housing data
     Params:
-        tags (str): tags for one row in housing data
+        tags (str): tags for one row in housing data, string of list
         specific_tags (list): specific tags to encode
     Returns:
         DataFrame of encoded tags
@@ -103,3 +104,24 @@ def one_hot_encode_tags(tags, specific_tags):
             ohe_dict['other_tags'] = True
     return pd.Series(ohe_dict)
 
+
+
+#creating a function todetermine the unique tags and their frequency
+def count_word_frequencies(df, column_name):
+    word_freq = defaultdict(int)
+    
+    #Loop through each row in the specified column
+    for row in df[column_name]:
+        if isinstance(row, list):
+            words = row
+        elif isinstance(row, str):
+            # Clean the string and split by comma
+            words = row.strip("[]").replace("'", "").split(',')
+        else:
+            continue  # Skip NaN or unexpected types
+        
+        for word in words:
+            clean_word = word.strip()
+            word_freq[clean_word] += 1  # Count frequencies
+    
+    return dict(word_freq)
